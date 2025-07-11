@@ -1,0 +1,7 @@
+---
+- name: "{{ role_name }} | Configure bash"
+  ansible.builtin.copy:
+    src: .bashrc
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    mode: "0644"
+    force: true

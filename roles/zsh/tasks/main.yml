@@ -1,0 +1,7 @@
+---
+- name: "{{ role_name }} | Configure zsh"
+  ansible.builtin.copy:
+    src: .zshrc
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: "0644"
+    force: true

@@ -5,12 +5,6 @@
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
 
   tasks:
-    - name: test
-      ansible.builtin.include_role:
-        name: test
-        apply:
-          tags: [test]
-
     - name: nvim
       ansible.builtin.include_role:
         name: nvim
@@ -26,3 +20,11 @@
     - name: python
       ansible.builtin.include_role:
         name: python
+
+    - name: zsh
+      ansible.builtin.include_role:
+        name: zsh
+
+    - name: bash
+      ansible.builtin.include_role:
+        name: bash

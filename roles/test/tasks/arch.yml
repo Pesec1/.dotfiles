@@ -1,3 +1,0 @@
-- name: "test debug message"
-  ansible.builtin.debug:
-    msg: "{{playbook_dir}}"
