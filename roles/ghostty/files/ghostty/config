@@ -1,0 +1,11 @@
+# fonts
+font-family=JetBrainsMonoNerdFontMono-Regular
+font-size=17
+font-thicken = true
+bold-is-bright = true
+
+# theme
+theme=UltraDark
+
+# system
+app-notifications=no-clipboard-copy

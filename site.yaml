@@ -18,3 +18,7 @@
     - name: tmux
       ansible.builtin.include_role:
         name: tmux
+
+    - name: ghostty
+      ansible.builtin.include_role:
+        name: ghostty

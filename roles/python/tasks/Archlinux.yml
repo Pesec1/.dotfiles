@@ -1,0 +1,4 @@
+- name: "UV | {{ ansible_distribution }} | Install UV"
+  kewlfft.aur.aur:
+    name: uv
+    state: present

@@ -1,0 +1,17 @@
+---
+- name: "Ghostty | Checking for Distribution Config: {{ ansible_distribution }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ ansible_distribution }}.yml"
+  register: ghostty_distribution_config
+
+- name: "Ghostty | Run Tasks: {{ ansible_distribution }}"
+  ansible.builtin.include_tasks: "{{ ansible_distribution }}.yml"
+  when: ghostty_distribution_config.stat.exists
+
+- name: "Ghostty | Configure ghostty"
+  ansible.builtin.copy:
+    src: ghostty
+    dest: "{{ ansible_user_dir }}/.config/"
+    mode: "0644"
+    directory_mode: "0755"
+    force: true
