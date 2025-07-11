@@ -1,0 +1,12 @@
+update_ansible_galaxy() {
+  local os=arch
+  local os_requirements=""
+  echo "Installing Ansible dependencies (This may take a few minutes)"
+  if [ -f "/opt/hosting/ansible/requirements/$os.yml" ]; then
+    echo "Installing Ansible dependencies for $os"
+    os_requirements="/opt/hosting/ansible/requirements/$os.yml"
+  fi
+  echo $os_requirements
+  ansible-galaxy install -r $os_requirements
+}
+update_ansible_galaxy

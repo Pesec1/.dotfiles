@@ -1,0 +1,16 @@
+- hosts:
+    - localhost
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+
+  tasks:
+    - name: test
+      ansible.builtin.include_role:
+        name: test
+        apply:
+          tags: [test]
+
+    - name: nvim
+      ansible.builtin.include_role:
+        name: nvim
