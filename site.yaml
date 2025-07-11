@@ -22,3 +22,7 @@
     - name: ghostty
       ansible.builtin.include_role:
         name: ghostty
+
+    - name: python
+      ansible.builtin.include_role:
+        name: python
