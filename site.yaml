@@ -28,3 +28,7 @@
     - name: bash
       ansible.builtin.include_role:
         name: bash
+
+    - name: postgres
+      ansible.builtin.include_role:
+        name: postgres

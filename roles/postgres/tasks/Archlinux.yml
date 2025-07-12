@@ -1,4 +1,5 @@
-- name: "Neovim | {{ ansible_distribution }} | Install Neovim Nightly"
-  kewlfft.aur.aur:
-    name: neovim-git
+- name: "Postgresql | {{ ansible_distribution }} | Install Postgresql"
+  community.general.pacman:
+    name: postgresql
     state: present
+  become: true
