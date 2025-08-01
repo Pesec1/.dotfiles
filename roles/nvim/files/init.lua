@@ -7,6 +7,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 vim.opt.showmode = false
+vim.g.clipboard = 'osc52'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.swapfile = false
 vim.opt.breakindent = true
