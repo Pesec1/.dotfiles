@@ -29,6 +29,7 @@
   when: not nvim_config_stat.stat.exists or not nvim_config_stat.stat.islnk
 
 - name: "Neovim | Create symlink to role files directory"
+  tags: nvim
   ansible.builtin.file:
     src: "{{ role_path }}/files"
     dest: "{{ ansible_user_dir }}/.config/nvim"

@@ -8,6 +8,7 @@
     - name: nvim
       ansible.builtin.include_role:
         name: nvim
+      tags: nvim
 
     - name: tmux
       ansible.builtin.include_role:
@@ -17,19 +18,24 @@
     - name: ghostty
       ansible.builtin.include_role:
         name: ghostty
+      tags: ghostty
 
     - name: python
       ansible.builtin.include_role:
         name: python
+      tags: python
 
     - name: zsh
       ansible.builtin.include_role:
         name: zsh
+      tags: zsh
 
     - name: bash
       ansible.builtin.include_role:
         name: bash
+      tags: bash
 
     - name: postgres
       ansible.builtin.include_role:
         name: postgres
+      tags: postgres
