@@ -36,7 +36,14 @@ require "vague".setup({ transparent = true })
 vim.cmd("colorscheme vague")
 vim.cmd(":hi statusline guibg=NONE")
 
-require 'oil'.setup()
+require 'oil'.setup({
+	keymaps = {
+		['<C-o>'] = 'actions.copy_to_system_clipboard',
+	},
+	view_options = {
+		show_hidden = true,
+	},
+})
 vim.keymap.set('n', '-', ':Oil<Cr>')
 
 require 'mini.pick'.setup()
