@@ -1,4 +1,5 @@
 vim.opt.relativenumber = true
+vim.opt.termguicolors = true
 vim.opt.signcolumn = 'no'
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -21,8 +22,8 @@ vim.pack.add({
 	{ src = 'https://github.com/stevearc/oil.nvim.git' },
 	{ src = 'https://github.com/echasnovski/mini.pick.git' },
 	{ src = 'https://github.com/mason-org/mason.nvim.git' },
-	{ src = 'https://github.com/vague2k/vague.nvim' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+	{ src = 'https://github.com/vague2k/vague.nvim' },
 })
 
 require('nvim-treesitter').setup({
@@ -33,7 +34,7 @@ require('nvim-treesitter').setup({
 })
 
 require "vague".setup({ transparent = true })
-vim.cmd("colorscheme vague")
+vim.cmd.colorscheme 'vague'
 vim.cmd(":hi statusline guibg=NONE")
 
 require 'oil'.setup({
