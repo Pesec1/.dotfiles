@@ -24,6 +24,7 @@ vim.pack.add({
 	{ src = 'https://github.com/mason-org/mason.nvim.git' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
 	{ src = 'https://github.com/vague2k/vague.nvim' },
+	{ src = 'https://github.com/dense-analysis/ale.git' },
 })
 
 require('nvim-treesitter').setup({
@@ -57,6 +58,10 @@ vim.lsp.enable({ "lua_ls", "ruff", "basedpyright" })
 vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
 vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+
+vim.g.ale_linters = { python = { "ruff" } }
+vim.g.ale_fixers = { python = { "ruff", "ruff_format" } }
+vim.g.ale_virtualtext_cursor = 'disabled'
 
 require("mason").setup()
 
