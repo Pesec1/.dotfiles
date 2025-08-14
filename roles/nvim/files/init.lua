@@ -2,6 +2,7 @@ vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'no'
 vim.opt.tabstop = 4
+vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.smartindent = true
 vim.opt.swapfile = false
@@ -19,19 +20,22 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.g.mapleader = " "
 
 vim.pack.add({
-	{ src = 'https://github.com/stevearc/oil.nvim.git' },
-	{ src = 'https://github.com/echasnovski/mini.pick.git' },
-	{ src = 'https://github.com/mason-org/mason.nvim.git' },
-	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
-	{ src = 'https://github.com/vague2k/vague.nvim' },
-	{ src = 'https://github.com/dense-analysis/ale.git' },
+    { src = 'https://github.com/stevearc/oil.nvim.git' },
+    { src = 'https://github.com/echasnovski/mini.pick.git' },
+    { src = 'https://github.com/mason-org/mason.nvim.git' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+    { src = 'https://github.com/vague2k/vague.nvim' },
+    { src = 'https://github.com/dense-analysis/ale.git' },
+    { src = 'https://github.com/NMAC427/guess-indent.nvim.git' },
 })
 
+require('guess-indent').setup {}
+
 require('nvim-treesitter').setup({
-	auto_install = true,
-	highlight = {
-		enable = true,
-	},
+    auto_install = true,
+    highlight = {
+        enable = true,
+    },
 })
 
 require "vague".setup({ transparent = true })
@@ -39,12 +43,12 @@ vim.cmd.colorscheme 'vague'
 vim.cmd(":hi statusline guibg=NONE")
 
 require 'oil'.setup({
-	keymaps = {
-		['<C-o>'] = 'actions.copy_to_system_clipboard',
-	},
-	view_options = {
-		show_hidden = true,
-	},
+    keymaps = {
+        ['<C-o>'] = 'actions.copy_to_system_clipboard',
+    },
+    view_options = {
+        show_hidden = true,
+    },
 })
 vim.keymap.set('n', '-', ':Oil<Cr>')
 
@@ -54,7 +58,7 @@ vim.keymap.set('n', '<leader><leader>', ':Pick buffers<Cr>')
 vim.keymap.set('n', '<leader>sg', ':lua MiniPick.builtin.grep_live()<Cr>')
 
 -- Lsp
-vim.lsp.enable({ "lua_ls", "ruff", "basedpyright" })
+vim.lsp.enable({ "lua_ls", "ruff", "basedpyright", "ts_ls" })
 vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
 vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
