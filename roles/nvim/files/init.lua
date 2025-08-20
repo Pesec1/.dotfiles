@@ -27,6 +27,7 @@ vim.pack.add({
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
     { src = 'https://github.com/vague2k/vague.nvim' },
     { src = 'https://github.com/NMAC427/guess-indent.nvim.git' },
+    { src = 'https://github.com/dense-analysis/ale.git' },
 })
 
 require('guess-indent').setup {}
@@ -62,31 +63,12 @@ vim.lsp.enable({ "lua_ls", "ruff", "basedpyright", "ts_ls", "rust-analyzer" })
 vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
 vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+vim.g.ale_linters = { python = { "ruff" } }
+vim.g.ale_fixers = { python = { "ruff", "ruff_format" } }
+vim.g.ale_virtualtext_cursor = 'disabled'
 
 require("mason").setup()
 
-local function fix_python()
-    local bufnr   = vim.api.nvim_get_current_buf()
-    local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'ruff', }
-    local uri     = vim.uri_from_bufnr(bufnr)
-    local vers    = vim.lsp.util.buf_versions[bufnr]
-    for _, client in ipairs(clients) do
-        for _, cmd in ipairs({ 'ruff.applyAutofix', 'ruff.applyOrganizeImports' }) do
-            local params = {
-                command = cmd,
-                arguments = {
-                    {
-                        uri = uri,
-                        version = vers,
-                    },
-                },
-            }
-            client.request('workspace/executeCommand', params, nil, 1)
-        end
-    end
-end
-
-vim.keymap.set("n", "<leader>l", fix_python, { desc = "fix ruff" })
 -- Marks operations
 vim.keymap.set('n', '<leader>cm', '<cmd>delm!<CR>', { desc = 'Delete in file [m]arks' })
 vim.keymap.set('n', '<leader>cM', '<cmd>delm A-Z0-9<CR>', { desc = 'Delete file [M]arks' })
