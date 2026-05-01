@@ -1,7 +1,7 @@
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.undofile = true
-vim.opt.signcolumn = 'no'
+vim.opt.signcolumn = 'yes'
 vim.opt.tabstop = 4
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
@@ -22,12 +22,13 @@ vim.g.mapleader = " "
 
 vim.pack.add({
     { src = 'https://github.com/stevearc/oil.nvim.git' },
-    { src = 'https://github.com/echasnovski/mini.pick.git' },
     { src = 'https://github.com/mason-org/mason.nvim.git' },
-    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter',  version = 'main', },
     { src = 'https://github.com/vague2k/vague.nvim' },
     { src = 'https://github.com/NMAC427/guess-indent.nvim.git' },
     { src = 'https://github.com/dense-analysis/ale.git' },
+    { src = 'https://www.github.com/nvim-lua/plenary.nvim' },
+    { src = 'https://github.com/nvim-telescope/telescope.nvim.git' },
 })
 
 require('guess-indent').setup {}
@@ -53,19 +54,20 @@ require 'oil'.setup({
 })
 vim.keymap.set('n', '-', ':Oil<Cr>')
 
-require 'mini.pick'.setup()
-vim.keymap.set('n', '<leader>sf', ':Pick files<Cr>')
-vim.keymap.set('n', '<leader><leader>', ':Pick buffers<Cr>')
-vim.keymap.set('n', '<leader>sg', ':lua MiniPick.builtin.grep_live()<Cr>')
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = 'Telescope buffers' })
 
 -- Lsp
 vim.lsp.enable({ "lua_ls", "ruff", "basedpyright", "ts_ls", "rust-analyzer" })
 vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
-vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-vim.g.ale_linters = { python = { "ruff" } }
+vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+vim.g.ale_linters = { python = {} }
 vim.g.ale_fixers = { python = { "ruff", "ruff_format" } }
 vim.g.ale_virtualtext_cursor = 'disabled'
+vim.keymap.set('n', '<leader>af', '<cmd>ALEFix<CR>', { desc = 'ALE fix file' })
 
 require("mason").setup()
 
