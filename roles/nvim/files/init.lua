@@ -23,7 +23,8 @@ vim.g.mapleader = " "
 vim.pack.add({
     { src = 'https://github.com/stevearc/oil.nvim.git' },
     { src = 'https://github.com/mason-org/mason.nvim.git' },
-    { src = 'https://github.com/nvim-treesitter/nvim-treesitter',  version = 'main', },
+    { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter',              version = 'main', },
     { src = 'https://github.com/vague2k/vague.nvim' },
     { src = 'https://github.com/NMAC427/guess-indent.nvim.git' },
     { src = 'https://github.com/dense-analysis/ale.git' },
@@ -33,11 +34,38 @@ vim.pack.add({
 
 require('guess-indent').setup {}
 
-require('nvim-treesitter').setup({
-    auto_install = true,
-    highlight = {
-        enable = true,
+local treesitter_parsers = {
+    'lua',
+    'python',
+    'javascript',
+    'typescript',
+    'tsx',
+    'rust',
+    'json',
+    'markdown',
+    'markdown_inline',
+}
+-- NOTE: cargo binstall tree-sitter-cli 
+-- otherwise this won't work
+require('nvim-treesitter').setup()
+require('nvim-treesitter').install(treesitter_parsers)
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = {
+        'lua',
+        'python',
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'rust',
+        'json',
+        'jsonc',
+        'markdown',
     },
+    callback = function()
+        vim.treesitter.start()
+    end,
 })
 
 require "vague".setup({ transparent = true })
@@ -54,13 +82,58 @@ require 'oil'.setup({
 })
 vim.keymap.set('n', '-', ':Oil<Cr>')
 
+-- Ripgrep glob patterns. Excluded paths are not scanned at all.
+local telescope_ignore_globs = {
+    '**/.git/**',
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/coverage/**',
+    '**/*.min.js',
+    '**/sources/**',
+}
+
+local function telescope_rg_args()
+    local args = { '--hidden', '--no-ignore', '--no-ignore-parent' }
+    for _, glob in ipairs(telescope_ignore_globs) do
+        table.insert(args, '--glob=!' .. glob)
+    end
+    return args
+end
+
+require('telescope').setup({
+    pickers = {
+        find_files = {
+            find_command = function()
+                local command = { 'rg', '--files', '--color', 'never' }
+                vim.list_extend(command, telescope_rg_args())
+                return command
+            end,
+        },
+        live_grep = {
+            additional_args = telescope_rg_args,
+        },
+    },
+})
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = 'Telescope buffers' })
 
 -- Lsp
-vim.lsp.enable({ "lua_ls", "ruff", "basedpyright", "ts_ls", "rust-analyzer" })
+require('mason').setup()
+require('mason-tool-installer').setup({
+    ensure_installed = {
+        'lua-language-server',
+        'ruff',
+        'basedpyright',
+        'typescript-language-server',
+        'rust-analyzer',
+        'marksman',
+    },
+})
+
+vim.lsp.enable({ "lua_ls", "ruff", "basedpyright", "ts_ls", "rust_analyzer", "marksman" })
 vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
 vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
@@ -68,8 +141,6 @@ vim.g.ale_linters = { python = {} }
 vim.g.ale_fixers = { python = { "ruff", "ruff_format" } }
 vim.g.ale_virtualtext_cursor = 'disabled'
 vim.keymap.set('n', '<leader>af', '<cmd>ALEFix<CR>', { desc = 'ALE fix file' })
-
-require("mason").setup()
 
 -- Marks operations
 vim.keymap.set('n', '<leader>cm', '<cmd>delm!<CR>', { desc = 'Delete in file [m]arks' })
